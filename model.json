@@ -1,9 +1,9 @@
 {
-  "gradleTool": "3.0.0-beta222",
-  "mavenRepo": "https://maven.google.com",
-  "distributionUrl": "https://services.gradle.org/distributions/gradle-4.1111-all.zip",
-  "compileSdkVersion": "252",
-  "targetSdkVersion": "256",
-  "buildToolsVersion": "26.0.1111",
-  "supportVersion": "25.4.1110"
+  "gradleTool": "3.0.0-beta4",
+  "mavenRepo": "~",
+  "distributionUrl": "https://services.gradle.org/distributions/gradle-4.1-all.zip",
+  "compileSdkVersion": "25",
+  "targetSdkVersion": "25",
+  "buildToolsVersion": "26.0.1",
+  "supportVersion": "25.4.0"
 }

@@ -5,6 +5,7 @@ import sys
 import os
 
 regex = "[compile|implementation|androidTestCompile|testImplementation]+ [\'|\"]com.android.support:.+"
+defModel = 'model.json'
 
 
 def loadRootBuildGradle():
@@ -18,7 +19,7 @@ def loadRootBuildGradle():
                 lines.insert(i + 1, new_line)
             if line.find('classpath \'com.android.tools.build:') != -1 \
                     and not modelDict['gradleTool'].find('~') != -1:
-                line = 'classpath \'com.android.tools.build:gradle:' + modelDict['gradleTool'] + '\''
+                line = 'classpath \'com.android.tools.build:gradle:' + modelDict['gradleTool'] + '\'\n'
                 lines[i] = line
         r_w.writelines(lines)
 
@@ -34,6 +35,37 @@ def loadGradleWrapper():
         gwFile_w.writelines(lines)
 
 
+def loadAllBG():
+    global lines, i, line
+    for dirA in os.listdir(path):
+        if not os.path.isfile(path + dirA) and not dirA.startswith('.'):
+            if os.path.isfile(path + dirA + os.sep + 'build.gradle'):
+                # load
+                dirAFilePath = path + dirA + os.sep + 'build.gradle'
+                with open(dirAFilePath) as oneBG_r:
+                    lines = oneBG_r.readlines()
+                with open(dirAFilePath, 'w') as oneBG_w:
+                    for i, line in enumerate(lines):
+                        if line.find('compileSdkVersion') != -1 and not modelDict['compileSdkVersion'].find(
+                                '~') != -1:
+                            lines[i] = '    compileSdkVersion ' + modelDict['compileSdkVersion'] + '\n'
+                        if line.find('buildToolsVersion') != -1 and not modelDict['buildToolsVersion'].find(
+                                '~') != -1:
+                            lines[i] = '    buildToolsVersion ' + modelDict['buildToolsVersion'] + '\n'
+                        if line.find('targetSdkVersion') != -1 and not modelDict['targetSdkVersion'].find(
+                                '~') != -1:
+                            lines[i] = '        targetSdkVersion ' + modelDict['targetSdkVersion'] + '\n'
+                        if not modelDict['supportVersion'].find('~') != -1:
+                            matchStr = re.search(regex, line)
+                            if matchStr:
+                                strTemp = matchStr.group()
+                                a = strTemp.rfind(':') + 1
+                                b = len(strTemp) - 1
+                                lines[i] = line.replace(strTemp[a:b], modelDict['supportVersion'])
+
+                    oneBG_w.writelines(lines)
+
+
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
@@ -45,8 +77,11 @@ if __name__ == '__main__':
             print("empty directory")
             sys.exit()
 
-        # find model.json
-        with open('model.json') as f:
+        if len(sys.argv) > 2:
+            if '-j' == sys.argv[2]:
+                defModel = sys.argv[3]
+
+        with open(defModel) as f:
             modelDict = json.load(f)
 
             if not path.endswith(os.sep):
@@ -59,33 +94,7 @@ if __name__ == '__main__':
             loadGradleWrapper()
 
             # load #root/#all_dic_has_build.gradle
-            for dirA in os.listdir(path):
-                if not os.path.isfile(path + dirA) and not dirA.startswith('.'):
-                    if os.path.isfile(path + dirA + os.sep + 'build.gradle'):
-                        # load
-                        dirAFilePath = path + dirA + os.sep + 'build.gradle'
-                        with open(dirAFilePath) as oneBG_r:
-                            lines = oneBG_r.readlines()
-                        with open(dirAFilePath, 'w') as oneBG_w:
-                            for i, line in enumerate(lines):
-                                if line.find('compileSdkVersion') != -1 and not modelDict['compileSdkVersion'].find(
-                                        '~') != -1:
-                                    lines[i] = '    compileSdkVersion ' + modelDict['compileSdkVersion'] + '\n'
-                                if line.find('buildToolsVersion') != -1 and not modelDict['buildToolsVersion'].find(
-                                        '~') != -1:
-                                    lines[i] = '    buildToolsVersion ' + modelDict['buildToolsVersion'] + '\n'
-                                if line.find('targetSdkVersion') != -1 and not modelDict['targetSdkVersion'].find(
-                                        '~') != -1:
-                                    lines[i] = '        targetSdkVersion ' + modelDict['targetSdkVersion'] + '\n'
-                                if not modelDict['supportVersion'].find('~') != -1:
-                                    matchStr = re.search(regex, line)
-                                    if matchStr:
-                                        strTemp = matchStr.group()
-                                        a = strTemp.rfind(':') + 1
-                                        b = len(strTemp) - 1
-                                        lines[i] = line.replace(strTemp[a:b], modelDict['supportVersion'])
-
-                            oneBG_w.writelines(lines)
+            loadAllBG()
     except IndexError:
         print("Please add Android project directory")
         sys.exit(-1)
