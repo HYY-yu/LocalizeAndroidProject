@@ -51,7 +51,7 @@ def loadAllBG():
                             lines[i] = '    compileSdkVersion ' + modelDict['compileSdkVersion'] + '\n'
                         if line.find('buildToolsVersion') != -1 and not modelDict['buildToolsVersion'].find(
                                 '~') != -1:
-                            lines[i] = '    buildToolsVersion ' + modelDict['buildToolsVersion'] + '\n'
+                            lines[i] = '    buildToolsVersion \'' + modelDict['buildToolsVersion'] + '\'\n'
                         if line.find('targetSdkVersion') != -1 and not modelDict['targetSdkVersion'].find(
                                 '~') != -1:
                             lines[i] = '        targetSdkVersion ' + modelDict['targetSdkVersion'] + '\n'
