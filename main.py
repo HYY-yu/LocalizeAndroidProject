@@ -57,11 +57,12 @@ def loadAllBG():
                             lines[i] = '        targetSdkVersion ' + modelDict['targetSdkVersion'] + '\n'
                         if not modelDict['supportVersion'].find('~') != -1:
                             matchStr = re.search(regex, line)
-                            if matchStr and not matchStr.find('multidex') != -1:
+                            if matchStr:
                                 strTemp = matchStr.group()
-                                a = strTemp.rfind(':') + 1
-                                b = len(strTemp) - 1
-                                lines[i] = line.replace(strTemp[a:b], modelDict['supportVersion'])
+                                if not strTemp.find('multidex') != -1:
+                                    a = strTemp.rfind(':') + 1
+                                    b = len(strTemp) - 1
+                                    lines[i] = line.replace(strTemp[a:b], modelDict['supportVersion'])
 
                     oneBG_w.writelines(lines)
 
