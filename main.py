@@ -59,9 +59,10 @@ def loadAllBG():
                             matchStr = re.search(regex, line)
                             if matchStr:
                                 strTemp = matchStr.group()
+                                # 跳过multidex
                                 if not strTemp.find('multidex') != -1:
                                     a = strTemp.rfind(':') + 1
-                                    b = len(strTemp) - 1
+                                    b = strTemp.rfind('\'')
                                     lines[i] = line.replace(strTemp[a:b], modelDict['supportVersion'])
 
                     oneBG_w.writelines(lines)
