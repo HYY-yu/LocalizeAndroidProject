@@ -11,5 +11,5 @@
 
 ## tip 
 
-- model.json 中你不想修改的属性 ，可以用"~"划掉， 如 ： "targetSdkVersion": "~"
+- model.json 中你不想修改的属性 ，可以用"\~"划掉， 如 ： "targetSdkVersion": "\~"
 - 大家有什么问题/建议统统砸过来吧～
