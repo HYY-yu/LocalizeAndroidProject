@@ -80,7 +80,7 @@ if __name__ == '__main__':
             sys.exit()
 
         if len(sys.argv) > 2:
-            if '-j' == sys.argv[2]:
+            if '-f' == sys.argv[2]:
                 defModel = sys.argv[3]
 
         with open(defModel) as f:
