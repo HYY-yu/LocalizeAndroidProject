@@ -3,10 +3,10 @@
 详细说明见博客：[用脚本秒开一个Android项目](http://blog.csdn.net/csdnyf/article/details/77898606)
 
 
-# How to use
-1. clone this project
-2. edit the model.json
-3. run : python main.py {path}
+# 使用
+1. 克隆下这个工程或者下载mian.py
+2. 定制model.json 如何定制见博客。
+3. python运行 : python main.py {path}
 > path is a Android Project directory like **/home/feng/AndroidProject/TestProject**
 
 ## tip 
