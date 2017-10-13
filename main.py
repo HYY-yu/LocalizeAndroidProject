@@ -97,6 +97,8 @@ if __name__ == '__main__':
 
             # load #root/#all_dic_has_build.gradle
             loadAllBG()
+            
+            # print(" Mission accomplished ~  ≖‿≖✧  ")
     except IndexError:
         print("Please add Android project directory")
         sys.exit(-1)
